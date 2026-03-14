@@ -4,8 +4,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm install --legacy-peer-deps",
   "framework": "vite",
+  "buildCommand": "CI=1 npm run build",
   "regions": ["hkg1"],
   "headers": [
     {
