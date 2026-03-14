@@ -19,7 +19,9 @@ export default defineConfig(({ mode }) => {
         'process.env.ELECTRON': JSON.stringify(mode === 'electron')
       },
       resolve: {
-        alias: {}
+        alias: {
+          '@': path.resolve(__dirname, '.')
+        }
       },
       build: {
         outDir: 'dist',

@@ -1,5 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { View } from '../types';
+import { storageManager, StorageMode } from '../services/storage-adapter';
+import { isSupabaseConfigured } from '../services/supabase-adapter';
 
 interface SidebarProps {
   currentView: View;
@@ -8,6 +10,28 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
   const [isRetrofitOpen, setIsRetrofitOpen] = useState(true);
+  const [storageMode, setStorageMode] = useState<StorageMode>('local');
+  const [isCloudAvailable, setIsCloudAvailable] = useState(false);
+
+  // Check Supabase configuration and load saved storage mode on mount
+  useEffect(() => {
+    const checkCloudAvailability = async () => {
+      const available = isSupabaseConfigured();
+      setIsCloudAvailable(available);
+      const savedMode = localStorage.getItem('STORAGE_MODE') as StorageMode;
+      if (savedMode && (savedMode === 'local' || savedMode === 'cloud')) {
+        setStorageMode(savedMode);
+        storageManager.setMode(savedMode);
+      }
+    };
+    checkCloudAvailability();
+  }, []);
+
+  const handleStorageModeChange = async (mode: StorageMode) => {
+    setStorageMode(mode);
+    storageManager.setMode(mode);
+    localStorage.setItem('STORAGE_MODE', mode);
+  };
 
   // Memoize CSS class functions to prevent recreation on each render
   const navItemClass = useCallback((isActive: boolean) =>
@@ -48,6 +72,34 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
           </span>
         </div>
       </div>
+
+      {/* Cloud Storage Toggle */}
+      {isCloudAvailable && (
+        <div className="px-4 pt-4">
+          <div className="bg-slate-50 rounded-xl p-2 flex gap-2">
+            <button
+              onClick={() => handleStorageModeChange('local')}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all ${
+                storageMode === 'local'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-600 hover:bg-white'
+              }`}
+            >
+              本地
+            </button>
+            <button
+              onClick={() => handleStorageModeChange('cloud')}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all ${
+                storageMode === 'cloud'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-600 hover:bg-white'
+              }`}
+            >
+              云端
+            </button>
+          </div>
+        </div>
+      )}
 
       <nav className="flex-1 overflow-y-auto py-4 px-4 space-y-1 scrollbar-hide">
         <div

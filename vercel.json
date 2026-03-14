@@ -1,5 +1,5 @@
 {
-  "name": "carbon-pro",
+  "name": "CAEBON-2.10",
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",

@@ -94,3 +94,68 @@ export class IndexedDBAdapter {
 
 // 导出环境检测
 export const isDesktopApp = isElectron();
+
+// ==================== Cloud Storage Support ====================
+
+export type StorageMode = 'local' | 'cloud';
+
+class StorageManager {
+    private mode: StorageMode = 'local';
+    private cloudAdapter: any = null;
+    private userId: string | null = null;
+
+    setMode(mode: StorageMode): void {
+        this.mode = mode;
+    }
+
+    getMode(): StorageMode {
+        return this.mode;
+    }
+
+    async setUserId(userId: string): Promise<void> {
+        this.userId = userId;
+        if (this.mode === 'cloud' && this.cloudAdapter) {
+            await this.cloudAdapter.setUserId(userId);
+        }
+    }
+
+    async getItem(key: string): Promise<string | null> {
+        if (this.mode === 'cloud' && this.cloudAdapter) {
+            return await this.cloudAdapter.getItem(key);
+        }
+        return await storage.getItem(key);
+    }
+
+    async setItem(key: string, value: string): Promise<void> {
+        if (this.mode === 'cloud' && this.cloudAdapter) {
+            await this.cloudAdapter.setItem(key, value);
+        } else {
+            await storage.setItem(key, value);
+        }
+    }
+
+    async removeItem(key: string): Promise<void> {
+        if (this.mode === 'cloud' && this.cloudAdapter) {
+            await this.cloudAdapter.removeItem(key);
+        } else {
+            await storage.removeItem(key);
+        }
+    }
+
+    async isCloudAvailable(): Promise<boolean> {
+        try {
+            const { isSupabaseConfigured } = await import('./supabase-adapter');
+            return isSupabaseConfigured();
+        } catch {
+            return false;
+        }
+    }
+
+    setCloudAdapter(adapter: any): void {
+        this.cloudAdapter = adapter;
+    }
+}
+
+// Singleton instance
+export const storageManager = new StorageManager();
+
