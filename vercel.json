@@ -1,13 +1,9 @@
 {
-  "name": "CAEBON-2.10",
+  "name": "carbon-pro",
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install --legacy-peer-deps",
   "framework": "vite",
-  "buildCommand": "CI=1 npm run build",
-  "regions": ["hkg1"],
   "headers": [
     {
       "source": "/assets/(.*)",
