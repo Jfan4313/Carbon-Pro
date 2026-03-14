@@ -1,5 +1,9 @@
 # 零碳项目收益评估软件
 
+[![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)](https://github.com/Jfan4313/Carbon-Pro/releases/tag/v1.0.0)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Vercel](https://img.shields.io/badge/deployment-Vercel-black?logo=vercel)](https://carbon-pro.vercel.app)
+
 > Electron + React 桌面应用，用于零碳项目的投资收益评估和分析
 
 ## 项目概述
@@ -8,7 +12,15 @@
 
 **项目状态**: 基本功能完成，部分高级功能待完善
 
-**当前版本**: 1.0.0
+---
+
+## 当前版本
+
+| 版本 | 发布日期 | 类型 | 说明 | 链接 |
+|------|---------|------|------|------|
+| v1.0.0 | 2026-03-14 | 初始发布 | 移动端响应式设计、ESG评估、多格式报告导出 | [查看](https://github.com/Jfan4313/Carbon-Pro/releases/tag/v1.0.0) |
+
+**查看所有版本**: [GitHub Releases](https://github.com/Jfan4313/Carbon-Pro/releases) | [更新日志](./CHANGELOG.md)
 
 ---
 
