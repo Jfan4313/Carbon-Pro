@@ -4,8 +4,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    // Vercel 部署使用绝对路径，本地开发使用相对路径
+    const isVercel = process.env.CI === '1';
     return {
-      base: './', // Electron 需要相对路径
+      base: isVercel ? '/' : './',
       server: {
         port: 5173,
         host: '127.0.0.1',
